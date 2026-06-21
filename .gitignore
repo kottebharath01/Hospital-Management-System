@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.venv/
+.hms-venv/
+venv/
+.env
+hospital.db
+.tmp/
+.vscode/*.log

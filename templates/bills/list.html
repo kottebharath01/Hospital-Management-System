@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block title %}Billing · CarePoint{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>Billing</h1><p>Create bills and track payments. Total: <strong>{{ total|money }}</strong></p></div><a class="btn btn-primary" href="{{ url_for('add_bill') }}">+ Create Bill</a></div>
+<div class="panel"><div class="table-wrap"><table><thead><tr><th>Bill No.</th><th>Patient</th><th>Description</th><th>Date</th><th>Amount</th><th>Payment</th><th>Actions</th></tr></thead><tbody>
+{% for bill in bills %}<tr><td>#B{{ '%04d'|format(bill.id) }}</td><td><strong>{{ bill.patient_name }}</strong></td><td>{{ bill.description }}</td><td>{{ bill.bill_date }}</td><td><strong>{{ bill.amount|money }}</strong></td><td><span class="badge badge-{{ bill.payment_status|lower }}">{{ bill.payment_status }}</span></td><td class="actions"><a href="{{ url_for('edit_bill', bill_id=bill.id) }}">Edit</a><form method="post" action="{{ url_for('delete_bill', bill_id=bill.id) }}" onsubmit="return confirm('Delete this bill?')"><button class="link-danger">Delete</button></form></td></tr>
+{% else %}<tr><td colspan="7" class="empty">No bills created.</td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}

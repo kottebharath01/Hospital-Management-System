@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Edit' if bill else 'Create' }} Bill · CarePoint{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>{{ 'Edit Bill' if bill else 'Create Bill' }}</h1><p>Record a charge and payment status.</p></div><a class="btn btn-light" href="{{ url_for('bills') }}">← Back</a></div>
+<form class="panel form-panel" method="post"><div class="form-grid">
+    <label>Patient *<select required name="patient_id"><option value="">Choose patient...</option>{% for row in patients %}<option value="{{ row.id }}" {{ 'selected' if request.form.get('patient_id', bill.patient_id|string if bill else '')|string == row.id|string }}>{{ row.name }}</option>{% endfor %}</select></label>
+    <label>Bill Date *<input required type="date" name="bill_date" value="{{ request.form.get('bill_date', bill.bill_date if bill else today) }}"></label>
+    <label class="full">Description *<input required name="description" value="{{ request.form.get('description', bill.description if bill else '') }}" placeholder="e.g. Consultation and medicines"></label>
+    <label>Amount (₹) *<input required min="0" step="0.01" type="number" name="amount" value="{{ request.form.get('amount', bill.amount if bill else '') }}"></label>
+    <label>Payment Status<select name="payment_status">{% for value in ['Unpaid','Paid'] %}<option {{ 'selected' if request.form.get('payment_status', bill.payment_status if bill else 'Unpaid') == value }}>{{ value }}</option>{% endfor %}</select></label>
+</div><div class="form-actions"><a class="btn btn-light" href="{{ url_for('bills') }}">Cancel</a><button class="btn btn-primary">{{ 'Save Changes' if bill else 'Create Bill' }}</button></div></form>
+{% endblock %}

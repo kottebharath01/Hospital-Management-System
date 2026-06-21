@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Hospital Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <aside class="sidebar">
+        <a class="brand" href="{{ url_for('dashboard') }}">
+            <span class="brand-mark">+</span><span>CarePoint</span>
+        </a>
+        <p class="nav-label">MAIN MENU</p>
+        <nav>
+            <a class="{{ 'active' if request.endpoint == 'dashboard' }}" href="{{ url_for('dashboard') }}">⌂ Dashboard</a>
+            <a class="{{ 'active' if request.endpoint in ['patients', 'add_patient', 'edit_patient'] }}" href="{{ url_for('patients') }}">♙ Patients</a>
+            <a class="{{ 'active' if request.endpoint in ['doctors', 'add_doctor', 'edit_doctor'] }}" href="{{ url_for('doctors') }}">♚ Doctors</a>
+            <a class="{{ 'active' if request.endpoint in ['appointments', 'add_appointment', 'edit_appointment'] }}" href="{{ url_for('appointments') }}">▣ Appointments</a>
+            <a class="{{ 'active' if request.endpoint in ['bills', 'add_bill', 'edit_bill'] }}" href="{{ url_for('bills') }}">₹ Billing</a>
+        </nav>
+        <div class="sidebar-note"><strong>Beginner Project</strong><br>Flask + SQLite</div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <button class="menu-button" type="button" aria-label="Toggle menu">☰</button>
+            <div class="topbar-title">Hospital Administration</div>
+            <div class="admin"><span class="avatar">A</span><span><strong>Administrator</strong><small>Admin</small></span></div>
+        </header>
+        <section class="content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </section>
+        <footer>CarePoint Hospital Management System · {{ current_year }}</footer>
+    </main>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

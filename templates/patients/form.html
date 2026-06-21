@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Edit' if patient else 'Add' }} Patient · CarePoint{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>{{ 'Edit Patient' if patient else 'Register Patient' }}</h1><p>Fields marked * are required.</p></div><a class="btn btn-light" href="{{ url_for('patients') }}">← Back</a></div>
+<form class="panel form-panel" method="post"><div class="form-grid">
+    <label class="full">Full Name *<input required name="name" value="{{ request.form.get('name', patient.name if patient else '') }}" placeholder="Enter patient name"></label>
+    <label>Age *<input required min="0" max="130" type="number" name="age" value="{{ request.form.get('age', patient.age if patient else '') }}"></label>
+    <label>Gender *<select required name="gender"><option value="">Choose...</option>{% for value in ['Male','Female','Other'] %}<option {{ 'selected' if request.form.get('gender', patient.gender if patient else '') == value }}>{{ value }}</option>{% endfor %}</select></label>
+    <label>Phone *<input required name="phone" value="{{ request.form.get('phone', patient.phone if patient else '') }}" placeholder="10-digit phone number"></label>
+    <label>Blood Group<select name="blood_group"><option value="">Unknown</option>{% for value in ['A+','A-','B+','B-','AB+','AB-','O+','O-'] %}<option {{ 'selected' if request.form.get('blood_group', patient.blood_group if patient else '') == value }}>{{ value }}</option>{% endfor %}</select></label>
+    <label class="full">Address<textarea name="address" rows="3" placeholder="Patient address">{{ request.form.get('address', patient.address if patient else '') }}</textarea></label>
+</div><div class="form-actions"><a class="btn btn-light" href="{{ url_for('patients') }}">Cancel</a><button class="btn btn-primary">{{ 'Save Changes' if patient else 'Register Patient' }}</button></div></form>
+{% endblock %}

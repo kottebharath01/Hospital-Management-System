@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Edit' if appointment else 'Book' }} Appointment · CarePoint{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>{{ 'Edit Appointment' if appointment else 'Book Appointment' }}</h1><p>Choose a registered patient and doctor.</p></div><a class="btn btn-light" href="{{ url_for('appointments') }}">← Back</a></div>
+<form class="panel form-panel" method="post"><div class="form-grid">
+    <label>Patient *<select required name="patient_id"><option value="">Choose patient...</option>{% for row in patients %}<option value="{{ row.id }}" {{ 'selected' if request.form.get('patient_id', appointment.patient_id|string if appointment else '')|string == row.id|string }}>{{ row.name }}</option>{% endfor %}</select></label>
+    <label>Doctor *<select required name="doctor_id"><option value="">Choose doctor...</option>{% for row in doctors %}<option value="{{ row.id }}" {{ 'selected' if request.form.get('doctor_id', appointment.doctor_id|string if appointment else '')|string == row.id|string }}>{{ row.name }} — {{ row.specialization }}</option>{% endfor %}</select></label>
+    <label>Date *<input required type="date" min="{{ today }}" name="appointment_date" value="{{ request.form.get('appointment_date', appointment.appointment_date if appointment else today) }}"></label>
+    <label>Time *<input required type="time" name="appointment_time" value="{{ request.form.get('appointment_time', appointment.appointment_time if appointment else '') }}"></label>
+    <label class="full">Reason<textarea name="reason" rows="3" placeholder="Reason for the visit">{{ request.form.get('reason', appointment.reason if appointment else '') }}</textarea></label>
+    <label>Status<select name="status">{% for value in ['Scheduled','Completed','Cancelled'] %}<option {{ 'selected' if request.form.get('status', appointment.status if appointment else 'Scheduled') == value }}>{{ value }}</option>{% endfor %}</select></label>
+</div><div class="form-actions"><a class="btn btn-light" href="{{ url_for('appointments') }}">Cancel</a><button class="btn btn-primary">{{ 'Save Changes' if appointment else 'Book Appointment' }}</button></div></form>
+{% endblock %}

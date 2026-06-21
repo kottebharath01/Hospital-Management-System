@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block title %}Appointments · CarePoint{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>Appointments</h1><p>Book and track consultations.</p></div><a class="btn btn-primary" href="{{ url_for('add_appointment') }}">+ Book Appointment</a></div>
+<div class="panel"><div class="table-wrap"><table><thead><tr><th>ID</th><th>Patient</th><th>Doctor</th><th>Date & Time</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+{% for item in appointments %}<tr><td>#{{ item.id }}</td><td><strong>{{ item.patient_name }}</strong></td><td>{{ item.doctor_name }}<small class="table-subtitle">{{ item.specialization }}</small></td><td>{{ item.appointment_date }}<small class="table-subtitle">{{ item.appointment_time }}</small></td><td>{{ item.reason or '—' }}</td><td><span class="badge badge-{{ item.status|lower }}">{{ item.status }}</span></td><td class="actions"><a href="{{ url_for('edit_appointment', appointment_id=item.id) }}">Edit</a><form method="post" action="{{ url_for('delete_appointment', appointment_id=item.id) }}" onsubmit="return confirm('Delete this appointment?')"><button class="link-danger">Delete</button></form></td></tr>
+{% else %}<tr><td colspan="7" class="empty">No appointments booked.</td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}

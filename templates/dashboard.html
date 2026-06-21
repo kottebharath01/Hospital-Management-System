@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard · CarePoint{% endblock %}
+{% block content %}
+<div class="page-heading">
+    <div><h1>Dashboard</h1><p>Welcome back. Here is today's hospital overview.</p></div>
+    <a class="btn btn-primary" href="{{ url_for('add_appointment') }}">+ New Appointment</a>
+</div>
+<div class="stats-grid">
+    <div class="stat-card blue"><span class="stat-icon">♙</span><div><small>Total Patients</small><strong>{{ stats.patients }}</strong><a href="{{ url_for('patients') }}">View all →</a></div></div>
+    <div class="stat-card green"><span class="stat-icon">♚</span><div><small>Doctors</small><strong>{{ stats.doctors }}</strong><a href="{{ url_for('doctors') }}">View all →</a></div></div>
+    <div class="stat-card orange"><span class="stat-icon">▣</span><div><small>Today's Appointments</small><strong>{{ stats.appointments }}</strong><a href="{{ url_for('appointments') }}">View schedule →</a></div></div>
+    <div class="stat-card purple"><span class="stat-icon">₹</span><div><small>Unpaid Amount</small><strong>{{ stats.unpaid|money }}</strong><a href="{{ url_for('bills') }}">View bills →</a></div></div>
+</div>
+<div class="panel">
+    <div class="panel-header"><div><h2>Upcoming Appointments</h2><p>Latest patient bookings</p></div><a href="{{ url_for('appointments') }}">View all</a></div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Patient</th><th>Doctor</th><th>Date</th><th>Time</th><th>Status</th></tr></thead>
+            <tbody>
+            {% for item in appointments %}
+                <tr><td><strong>{{ item.patient_name }}</strong></td><td>{{ item.doctor_name }}</td><td>{{ item.appointment_date }}</td><td>{{ item.appointment_time }}</td><td><span class="badge badge-{{ item.status|lower }}">{{ item.status }}</span></td></tr>
+            {% else %}<tr><td colspan="5" class="empty">No appointments yet.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

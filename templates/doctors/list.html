@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Doctors · CarePoint{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>Doctors</h1><p>Manage doctors, specializations, and availability.</p></div><a class="btn btn-primary" href="{{ url_for('add_doctor') }}">+ Add Doctor</a></div>
+<div class="card-grid">{% for doctor in doctors %}<article class="doctor-card"><div class="doctor-top"><div class="doctor-avatar">{{ doctor.name.replace('Dr. ', '')[0] }}</div><div><h3>{{ doctor.name }}</h3><span>{{ doctor.specialization }}</span></div></div><dl><div><dt>Phone</dt><dd>{{ doctor.phone }}</dd></div><div><dt>Email</dt><dd>{{ doctor.email or '—' }}</dd></div><div><dt>Room</dt><dd>{{ doctor.room_number or '—' }}</dd></div><div><dt>Available</dt><dd>{{ doctor.available_days or '—' }}</dd></div></dl><div class="card-actions"><a href="{{ url_for('edit_doctor', doctor_id=doctor.id) }}">Edit details</a><form method="post" action="{{ url_for('delete_doctor', doctor_id=doctor.id) }}" onsubmit="return confirm('Delete this doctor?')"><button class="link-danger">Delete</button></form></div></article>{% else %}<div class="empty-card">No doctors have been added.</div>{% endfor %}</div>
+{% endblock %}

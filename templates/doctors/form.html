@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Edit' if doctor else 'Add' }} Doctor · CarePoint{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>{{ 'Edit Doctor' if doctor else 'Add Doctor' }}</h1><p>Enter professional and contact information.</p></div><a class="btn btn-light" href="{{ url_for('doctors') }}">← Back</a></div>
+<form class="panel form-panel" method="post"><div class="form-grid">
+{% set fields = [('name','Full Name *','Dr. Full Name'),('specialization','Specialization *','e.g. Cardiology'),('phone','Phone *','Phone number'),('email','Email','doctor@example.com'),('room_number','Room Number','e.g. 201'),('available_days','Available Days','e.g. Mon, Wed, Fri')] %}
+{% for key, label, placeholder in fields %}<label>{{ label }}<input {% if '*' in label %}required{% endif %} {% if key == 'email' %}type="email"{% endif %} name="{{ key }}" value="{{ request.form.get(key, doctor[key] if doctor else '') }}" placeholder="{{ placeholder }}"></label>{% endfor %}
+</div><div class="form-actions"><a class="btn btn-light" href="{{ url_for('doctors') }}">Cancel</a><button class="btn btn-primary">{{ 'Save Changes' if doctor else 'Add Doctor' }}</button></div></form>
+{% endblock %}
